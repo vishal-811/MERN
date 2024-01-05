@@ -39,11 +39,142 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
+const fs=require('fs');
   const express = require('express');
   const bodyParser = require('body-parser');
   
   const app = express();
   
   app.use(bodyParser.json());
+
+   app.get('/todos' ,function(req,res){
+        fs.readFile('todos.json','utf-8',function(err,data){
+          if(err){
+            res.json({msg:"Not able to read todos"})
+          }
+          // console.log(data);
+          res.status(200).json(JSON.parse(data));
+        })  
+       
+   })
+
+   app.get('/todos/:id',function(req,res){
+    const id=req.params.id;
+      fs.readFile('todos.json','utf-8',function(err,data){
+         if(err){
+           res.status(404).json({msg:"Not able to fetch"});
+         }
+         const todos=JSON.parse(data);
+          const todoId=todos.findIndex(todo => todo.id==id)
+            if(todoId!=-1){
+              res.status(200).json(todos[todoId]);
+            }
+            else{
+              res.status(404).json({msg:"wrong input"})
+            }
+            })
+          });
+    
+  app.post('/todos', function(req,res){
+    const {title,description}=req.body;
+         fs.readFile('todos.json','utf-8',function(err,data){
+          if(err){
+            res.json({msg:"something went wrong"});
+          }
+          else{
+            let todoList=JSON.parse(data);
+            const newtodo={
+               id:todoList.length+1,
+               title:title,
+               description:description
+            }
+
+            todoList.push(newtodo);
+            fs.writeFile('todos.json',JSON.stringify(todoList),'utf-8',function(err){
+              if(err){
+                throw err;
+              }
+              else{
+                res.status(201).json({msg:"new todo added sucessfully"})
+              }
+            })
+          }
   
+         })
+  });
+
+  app.put('/todos/:id',function(req,res){
+         const id=req.params.id;
+         const {title,description}=req.body
+          
+         fs.readFile('todos.json','utf-8',function(err,data){
+          if(err){
+            throw err;
+           }
+           else{
+              let todoList=JSON.parse(data);
+              const todoIndex=todoList.findIndex(todo => todo.id==id)
+              if(todoIndex!=-1){
+              
+                  
+                  todoList[todoIndex]={
+                    id:parseInt(id),
+                     title:title,
+                     description:description
+                  };
+
+                  fs.writeFile('todos.json',JSON.stringify(todoList),'utf-8',(err)=>{
+                    if(err){
+                       throw err;
+                    }
+                    else{
+                      res.status(200).json({msg:"updated sucessfully"})
+                    }
+                })
+             }
+             else{
+              res.status(404).json({msg:"not found!"})
+             }       
+                  
+              }
+           })
+        });
+
+        app.delete('/todos/:id',function(req,res){
+           const id=req.params.id;
+
+           fs.readFile('todos.json','utf-8',function(err,data){
+             if(err){
+              throw err;
+             }
+             else{
+              const todosList=JSON.parse(data);
+               const todoIndex=todosList.findIndex((todo)=> todo.id==id);
+               if(todoIndex!=-1){
+                // let updatedtodo=[];
+                    const updatedtodo=todosList.filter(todo => todo.id!=id);
+
+                    fs.writeFile('todos.json',JSON.stringify(updatedtodo),'utf-8',function(err){
+                        if(err){
+                          throw err;
+                        }
+                        else{
+                          res.status(200).json({msg:"deleted successfully"})
+                        }
+                    })
+               }
+               else{
+                res.status(404).json({msg:"Not found"})
+               }
+
+             }
+           })
+        });
+ 
+app.get('*' ,function(req,res){
+  res.status(404).json({msg:"Error 404 Not found"});
+})
+       
+
+app.listen(3000);
   module.exports = app;
