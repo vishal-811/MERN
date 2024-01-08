@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const jwtPassword = 'secret';
+const zod=require('zod');
+// import { z } from "zod" ;
 
 
 /**
@@ -12,9 +14,24 @@ const jwtPassword = 'secret';
  * @returns {string|null} A JWT string if the username and password are valid.
  *                        Returns null if the username is not a valid email or
  *                        the password does not meet the length requirement.
+ * 
  */
+
+const emailSchema =zod.string().email();
+const passwordSchema =zod.string().min(6);
+
 function signJwt(username, password) {
-    // Your code here
+      const usernameresponse =emailSchema.safeParse(username);
+      const passwordresponse =passwordSchema.safeParse(password);
+      if(usernameresponse.success && passwordresponse.success){  //correct syntax hn
+             const token =jwt.sign({username} ,jwtPassword);
+             return token;
+      }
+      else{
+        // res.status(400).json({msg:"Invalid username or password"});
+        return null;
+      }
+    
 }
 
 /**
@@ -27,6 +44,17 @@ function signJwt(username, password) {
  */
 function verifyJwt(token) {
     // Your code here
+    try {
+        const verified =jwt.verify(token,jwtPassword);
+         if(verified){
+            return true;
+         }
+        
+    } catch (error) {
+        //   res.status(400).json({msg:"invalid token"})
+        return false;
+    }
+
 }
 
 /**
@@ -37,7 +65,13 @@ function verifyJwt(token) {
  *                         Returns false if the token is not a valid JWT format.
  */
 function decodeJwt(token) {
-    // Your code here
+     const decoded =jwt.decode(token);
+     if(decoded){
+        return true;
+     }
+     else{
+        return false;
+     }
 }
 
 
