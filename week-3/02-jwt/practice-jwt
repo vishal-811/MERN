@@ -1,0 +1,83 @@
+                                                              // Assignment
+// A website which has 2 parts
+// 1. POST/signin
+// BODY-{
+//      username:String,
+//      password:string
+// }
+
+// generate a jwt  with  encrypted username and return back to user so that we store it in the local storage. 
+
+//  2.GET /users
+  //  Headers-
+  //  Authorization Headers
+  // Return a array of users if tken is valid else return a error that token is not valid .
+
+
+  // To solve this problem use a inmemory db.
+
+  const express=require('express');
+  const jwt=require('jsonwebtoken');
+  const app=express();
+
+   app.use(express.json());
+  const jwtpassword="12345" //we store this in somewhere in secret place like github secrets ... ,as of now we store it there.
+
+  // Inmemory Database
+
+  const usersArray=[{
+    username:"vishal@gmail.com",
+    password:"123123",
+    name:"vishal"
+  },
+  {
+    username:"kiara@gmail.com",
+    password:"123123",
+    name:"kiara"
+  },
+{
+    username:"harkirat@gmail.com",
+    password:"123123",
+    name:"harkirat"
+}]
+
+function userexist(username,password){
+    const userexist =usersArray.find((value)=> value.username==username && value.password)
+    if(userexist!=-1){
+      return true;
+    }
+    else{
+      return false;
+    }
+}
+
+app.post('/signin' , function(req,res){
+  const username=req.body.username;
+  const password=req.body.password;
+
+  if(!userexist(username,password)){
+      res.status(400).json({msg:"invalid username or password"})
+  }
+  
+  const token =jwt.sign({username:username},jwtpassword);
+  res.json({
+    token
+  })
+
+});
+
+
+app.get('/users' ,function(req,res){
+  const token =req.headers.authorization;
+   
+  const isvalid =jwt.verify(token ,jwtpassword)
+  if(isvalid){
+    res.status(200).json({usersArray});
+  }
+  else{
+    res.status(400).json({msg:"something went wrong"});
+  }
+})
+
+app.listen(3000);
+
