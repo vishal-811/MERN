@@ -9,11 +9,16 @@ router.post('/signup', async (req, res) => {
     const username =req.body.username;
     const password=req.body.password;
 
-    const newAdmin =await Admin.create({
-        username:username,
-        password:password
-    })
-    res.status(200).json({msg:"Admin created Successfully"});
+    try {
+        const newAdmin =await Admin.create({
+            username:username,
+            password:password
+        })
+        res.status(200).json({msg:"Admin created Successfully"});
+   
+    } catch (error) {
+        console.error(error);
+    }
 });
 
 router.post('/courses', adminMiddleware, async (req, res) => {
@@ -22,8 +27,10 @@ router.post('/courses', adminMiddleware, async (req, res) => {
     //  const description =req.body.description;
     //  const price =req.body.price;
     //  const imageLink =req.body.imageLink;
-
-    const {title ,description, price,imageLink} =req.body;
+      
+    
+    try {
+        const {title ,description, price,imageLink} =req.body;
     const newcourse =await Course.create({
         title,
         description,
@@ -31,7 +38,10 @@ router.post('/courses', adminMiddleware, async (req, res) => {
         imageLink
     })
     res.status(200).json({msg:"course created successfully"})
-    // id wala logic pending hn
+    } catch (error) {
+         console.error(error);
+         res.status(403).json({msg:"something went wrong"})
+    }
 });
 
 router.get('/courses', adminMiddleware, async(req, res) => {

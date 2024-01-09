@@ -1,35 +1,70 @@
 const mongoose = require('mongoose');
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://user2000:@cluster0.pdnkicq.mongodb.net/courseDb');
+mongoose.connect('mongodb+srv://user2000:VX8opgPWYEsnQnfi@cluster0.pdnkicq.mongodb.net/Course_base?retryWrites=true&w=majority');
 
 // Define schemas
 const AdminSchema = new mongoose.Schema({
     // Schema definition here
     username:{
-       type: string,
+       type:String,
         required:[true, 'username is  required']
     },
     password:{
-        type:string,
+        type:String,
         required:[true, 'password is required'],
-        length:6
+        minlength:6
     },
  },
 
-// {
-    // timestamps:true,
-// }
+{
+    timestamps:true,
+}
 
 );
 
 const UserSchema = new mongoose.Schema({
     // Schema definition here
+    username:{
+        type:String,
+        required:[true ,'username is required']
+    },
+
+    password:{
+        type:String,
+        required:[true ,'password is required']
+    }
+
 });
 
 const CourseSchema = new mongoose.Schema({
     // Schema definition here
-});
+    id :{
+         type:Number,
+         required:[true, 'id is reuired']
+    },
+    title:{
+        type:String,
+        required:[true , 'Title is required']
+    },
+    description:{
+        type:String,
+    },
+    price:{
+        type:String,
+        required:[true ,'Price is required']
+    },
+    imageLink:{
+        type:String,
+    }
+
+},
+
+{
+    timestamps:true,
+}
+
+);
 
 const Admin = mongoose.model('Admin', AdminSchema);
 const User = mongoose.model('User', UserSchema);
