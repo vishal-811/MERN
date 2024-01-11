@@ -1,11 +1,29 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 
 // Connect to MongoDB
-mongoose.connect('your-mongodb-url');
+const url=process.env.MONGO_URL;
+mongoose.connect(url);
 
 // Define schemas
 const AdminSchema = new mongoose.Schema({
     // Schema definition here
+    email:{
+        type:String,
+        rquired:[true,"email is required"]
+    },
+    username:{
+        type:String,
+        required:[true,"Username is required"]
+    },
+    password:{
+         type:String,
+         minlenght:6,
+         required:[true,'password is required']
+    }
+},
+{
+    timestamps:true
 });
 
 const UserSchema = new mongoose.Schema({
@@ -14,7 +32,26 @@ const UserSchema = new mongoose.Schema({
 
 const CourseSchema = new mongoose.Schema({
     // Schema definition here
-});
+      title:{
+          type:String,
+          required:[true,'title is required']
+      },
+      description:{
+        type:String,
+        required:[true,'description is required']
+      },
+      price:{
+          type:Number,
+          required:[true , 'price is required']
+      },
+    //   imageLink:{
+    //       type:String,
+    //   }
+},
+{
+    timestamps:true
+}
+);
 
 const Admin = mongoose.model('Admin', AdminSchema);
 const User = mongoose.model('User', UserSchema);
