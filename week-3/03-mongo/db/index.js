@@ -33,15 +33,17 @@ const UserSchema = new mongoose.Schema({
     password:{
         type:String,
         required:[true ,'password is required']
-    }
-
+    },
+    purchasedCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
 });
+
 
 const CourseSchema = new mongoose.Schema({
     // Schema definition here
     id :{
-         type:Number,
-         required:[true, 'id is reuired']
+        type: Number,
+         required:[true, 'id is reuired'],
+         unique:true
     },
     title:{
         type:String,

@@ -28,10 +28,15 @@ router.post('/courses', adminMiddleware, async (req, res) => {
     //  const price =req.body.price;
     //  const imageLink =req.body.imageLink;
       
-    
+    const lastcourse =await Course.findOne().sort({
+        createdAt:-1,
+    })
+    let id = !lastcourse?1:lastcourse.id+1;
+
     try {
         const {title ,description, price,imageLink} =req.body;
     const newcourse =await Course.create({
+       id,
         title,
         description,
         price,
