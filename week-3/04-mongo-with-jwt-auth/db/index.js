@@ -28,6 +28,28 @@ const AdminSchema = new mongoose.Schema({
 
 const UserSchema = new mongoose.Schema({
     // Schema definition here
+    email:{
+        type:String,
+        required:[true,'email is required']
+
+    },
+    username:{
+        type:String,
+        required:[true,'username is required']
+    },
+    password:{
+        type:String,
+        required:[true, 'password id required']
+    },
+    purchasedCourses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course'
+    }]
+
+
+},
+{
+    timestamps:true
 });
 
 const CourseSchema = new mongoose.Schema({
@@ -46,7 +68,8 @@ const CourseSchema = new mongoose.Schema({
       },
     //   imageLink:{
     //       type:String,
-    //   }
+    //   },
+
 },
 {
     timestamps:true

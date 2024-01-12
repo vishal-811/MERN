@@ -1,6 +1,6 @@
  require('dotenv').config();
 const { Router } = require("express");
-const {adminMiddleware,signupSchema} = require("../middleware/admin");
+const {adminMiddleware,emailpassSchema} = require("../middleware/admin");
 const router = Router();
 const bcrypt =require('bcrypt');
 const saltrounds=10;
@@ -8,7 +8,7 @@ const {Admin, Course} =require('../db');
 const jwt=require('jsonwebtoken')
 const jwt_secret =process.env.JWT_SECRET;  
 // Admin Routes
-router.post('/signup', signupSchema, async (req, res) => {
+router.post('/signup', emailpassSchema, async (req, res) => {
     // Implement admin signup logic
     const {email,username , password} =req.body;
     
