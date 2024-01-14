@@ -1,0 +1,109 @@
+<!-- <!DOCTYPE html>
+<html>
+
+<head>
+  <script>
+    let globalId = 1;
+    let todoState = [];
+    let oldTodoState = [];
+
+    function addTodoToDom() {
+      
+    }
+
+    function removeTodoFromDom(todo) {
+      
+    }
+
+    function updateTodoInDom(oldTodo, newTodo) {
+        
+    }
+
+    function updateState(newTodos) {
+      // calculate the diff b/w newTodos and oldTodos.
+      // More specifically, find out what todos are - 
+      // 1. added
+      // 2. deleted
+      // 3. updated
+      const added = [];
+      const deleted = [];
+      const updated = [];
+      // calculate these 3 arrays
+      // call addTodo, removeTodo, updateTodo functions on each of the
+      // elements
+      oldTodoState = newTodos;
+    }
+
+    function addTodo() {
+      const title = document.getElementById("title").value;
+      const description = document.getElementById("description").value;
+      todoState.push({
+        title: title,
+        description: description,
+        id: globalId++,
+      })
+      updateState(todoState);
+    }
+  </script>
+</head>
+
+<body>
+  <input type="text" id="title" placeholder="Todo title"></input> <br /><br />
+  <input type="text" id="description" placeholder="Todo description"></input> <br /><br />
+  <button onclick="addTodo()">Add todo</button>
+  <br /> <br />
+
+  <div id="todos">
+
+  </div>
+</body>
+
+</html> -->
+
+
+
+<!-- Intial/ first approach-->
+<!-- This code will add only one div and if we update it will update the same whole code and nothing else it will not add new div
+below so to avoid this we are going to use some hacks -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>initial approach</title>
+</head>
+<body>
+
+  <script>
+// this is the ugly way to write code. 
+    function addTodo(){
+         const title=document.getElementById("text").value;
+         const description =document.getElementById("desc").value;
+         console.log(title);
+         console.log(description);
+         const original=document.getElementById("container").innerHTML;  //take container i.e empty and add whatever we want in it .
+        
+         document.getElementById("container").innerHTML=original+`<div>${title}</div>
+            <div>${description}</div>
+           <button>Mark as done</button> `;
+
+
+        //  document.getElementById("container").innerHTML=
+        //  `<div>${title}</div>
+        //  <div>${description}</div>
+        //   <button>Mark as done</button> `;
+    }
+  </script>
+
+
+    <input type="text" placeholder="text" id="text">
+    <br><br>
+    <input type="description" placeholder="description" id="desc">
+    <br><br>
+    <button onclick="addTodo()" id="btn">Add todo</button>
+    <div id="container"></div>
+
+
+    
+</body>
+</html>
