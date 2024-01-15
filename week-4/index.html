@@ -60,12 +60,61 @@
 
 </html> -->
 
+<!-- Best way to write this code or more cleaner-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Best way </title>
+</head>
+<body>
+  <script>
+    let globalId=0;
+    function marksasdone(id){
+      const parent=document.getElementById(id);
+      parent.children[2].innerHTML="Done!"
+      
+    }
+
+    function createchild(title,description,id){
+      const child=document.createElement("div");
+      const firstgrandchild=document.createElement("div");
+      firstgrandchild.innerHTML=title;
+      const secondgrandchild=document.createElement("div");
+      secondgrandchild.innerHTML=description;
+      const thirdgrandchild=document.createElement("button");
+      thirdgrandchild.innerHTML="Mark as done";
+      console.log(id);
+      thirdgrandchild.setAttribute("onclick" ,`marksasdone(${id})`);
+     child.appendChild(firstgrandchild);
+     child.appendChild(secondgrandchild);
+     child.appendChild(thirdgrandchild);
+     child.setAttribute("id",id);
+     return child;
+    }
+    function addTodo(){
+      const title=document.getElementById("text").value;
+      const description=document.getElementById("desc").value;
+      const parent=document.getElementById("container");
+      parent.appendChild(createchild(title,description,globalId++))
+    }
+  </script>
+       <input type="text" placeholder="text" id="text">
+       <br><br>
+       <input type="description" placeholder="description" id="desc">
+       <br><br>
+       <button onclick="addTodo()">Add todo</button>
+       <div id="container"></div>  
+</body>
+</html>
 
 
 <!-- Intial/ first approach-->
 <!-- This code will add only one div and if we update it will update the same whole code and nothing else it will not add new div
 below so to avoid this we are going to use some hacks -->
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -106,4 +155,7 @@ below so to avoid this we are going to use some hacks -->
 
     
 </body>
-</html>
+</html> -->
+
+
+
