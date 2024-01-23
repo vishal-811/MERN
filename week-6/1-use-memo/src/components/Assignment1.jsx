@@ -24,7 +24,7 @@ export function Assignment1() {
              }
         }
         return factorial(input);   //function calling
-    });
+    },[input]);
    
 
     return (

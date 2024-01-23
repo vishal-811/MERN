@@ -11,9 +11,8 @@ export const Assignment3 = () => {
         // Add more items as needed
     ]);
 
-    // Your code starts here
-    const totalValue = 0;
-    // Your code ends here
+    const totalValue=items.reduce((total,items)=> total+items.value,0);
+   
     return (
         <div>
             <ul>
