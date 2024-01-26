@@ -94,82 +94,82 @@ export default App;
 // // show us changes that why it re-rendered again so React.memo fails here)
 
 
-// const App=()=>{
-//     const[exchange1Data,setExchange1Data] =useState({});
-//  const[exchange2Data ,setExchange2Data] =useState({});
-//  const [bankData,setBankData] =useState({});
+const App=()=>{
+    const[exchange1Data,setExchange1Data] =useState({});
+ const[exchange2Data ,setExchange2Data] =useState({});
+ const [bankData,setBankData] =useState({});
 
-//  useEffect(()=>{
-//      setExchange1Data({
-//          returns:100
-//      })
-//  },[])
+ useEffect(()=>{
+     setExchange1Data({
+         returns:100
+     })
+ },[])
 
-//  useEffect(()=>{
-//      setExchange2Data({
-//          returns:100
-//      })
-//  },[])
+ useEffect(()=>{
+     setExchange2Data({
+         returns:100
+     })
+ },[])
 
-//  useEffect(()=>{
-//      setTimeout(() => {
-//          setBankData({
-//              income:100
-//          })
-//      }, 5000);
-//  },[])
+ useEffect(()=>{
+     setTimeout(() => {
+         setBankData({
+             income:100
+         })
+     }, 5000);
+ },[])
 
 
-//  const cryptoReturns =function(){
-//     console.log("re-rendered")
-//      return exchange1Data.returns+exchange2Data.returns;
-//  }
+ const cryptoReturns =function(){
+    console.log("re-rendered")
+     return exchange1Data.returns+exchange2Data.returns;
+ }
 
+    return (
+         <>
+             <Child cryptoReturns={cryptoReturns()}/>
+          <Dummy></Dummy> 
+         </>
+    )
+}
+
+// Dummy component without memo
+// const Dummy =()=>{
+//     console.log("re-rendered1")
 //     return (
-//          <>
-//              <Child cryptoReturns={cryptoReturns()}/>
-//           <Dummy></Dummy> 
-//          </>
+//         <h1>hiii</h1>
 //     )
 // }
 
-// // Dummy component without memo
-// // const Dummy =()=>{
-// //     console.log("re-rendered1")
-// //     return (
-// //         <h1>hiii</h1>
-// //     )
-// // }
+// dummy component with React.memo
 
-// // dummy component with React.memo
+const Dummy =React.memo(()=>{
+        console.log("re-renderedDummy")
+        return (
+            <h1>hiii</h1>
+        )
+    })
 
-// const Dummy =React.memo(()=>{
-//         console.log("re-renderedDummy")
-//         return (
-//             <h1>hiii</h1>
-//         )
-//     })
-
-// // child component without React.memo
-// // const Child=({cryptoReturns})=>{
-// //     return (
-// //         <div>
-// //             your cryptoreturns are {cryptoReturns}
-// //         </div>
-// //     )
-// // }
-
-
-// // child component with memo
-// const Child=React.memo(({cryptoReturns})=>{
+// child component without React.memo
+// const Child=({cryptoReturns})=>{
 //     return (
 //         <div>
 //             your cryptoreturns are {cryptoReturns}
 //         </div>
 //     )
-// })
+// }
 
-// export default App;
+
+// child component with memo
+const Child=React.memo(({cryptoReturns})=>{
+    return (
+        <div>
+            your cryptoreturns are {cryptoReturns}
+        </div>
+    )
+})
+
+export default App;
 
 
 
@@ -183,41 +183,41 @@ export default App;
 // initially the exchange1data and exchange2data is set after renders and the cryptoreturns are calculated after renders , but after 5 sec.,
 // when the bankdata is set the cryptoreturns again call , but this time the cryptoreturns is not updated so it is un-necessary calculation.
 // we have to avoid this un-necessary re-rendering , so let's deep dive in to it .
-// const App=()=>{
-//     const[exchange1Data,setExchange1Data] =useState({});
-// const[exchange2Data ,setExchange2Data] =useState({});
-// const [bankData,setBankData] =useState({});
+const App=()=>{
+    const[exchange1Data,setExchange1Data] =useState({});
+const[exchange2Data ,setExchange2Data] =useState({});
+const [bankData,setBankData] =useState({});
 
-// useEffect(()=>{
-//     setExchange1Data({
-//         returns:100
-//     })
-// },[])
+useEffect(()=>{
+    setExchange1Data({
+        returns:100
+    })
+},[])
 
-// useEffect(()=>{
-//     setExchange2Data({
-//         returns:100
-//     })
-// },[])
+useEffect(()=>{
+    setExchange2Data({
+        returns:100
+    })
+},[])
 
-// useEffect(()=>{
-//     setTimeout(() => {
-//         setBankData({
-//             income:100
-//         })
-//     }, 5000);
-// },[])
+useEffect(()=>{
+    setTimeout(() => {
+        setBankData({
+            income:100
+        })
+    }, 5000);
+},[])
 
 
-// const cryptoReturns =function(){
-//     return exchange1Data.returns+exchange2Data.returns;
-// }
+const cryptoReturns =function(){
+    return exchange1Data.returns+exchange2Data.returns;
+}
 
-// const incometax=(cryptoReturns()+bankData.income)*0.3;
+const incometax=(cryptoReturns()+bankData.income)*0.3;
 
-// return (
-//     <h1>your income returns are {incometax}</h1>
-// )
-// }
+return (
+    <h1>your income returns are {incometax}</h1>
+)
+}
 
-// export default App;
+export default App;
