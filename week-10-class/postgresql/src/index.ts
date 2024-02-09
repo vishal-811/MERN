@@ -1,13 +1,19 @@
 // write a function to create a usertable in database.
-import { Client } from 'pg'
-require ('dotenv').config();
+import { Client } from 'pg';
+import dotenv from 'dotenv';
 
-const password =process.env.SECRET_PASSWORD
+dotenv.config();
+
+const password = process.env.SECRET_PASSWORD;
+const connectionString = `postgresql://vishalssharma811:${password}@ep-lucky-cake-a5x3dwnk.us-east-2.aws.neon.tech/neondb?sslmode=require`;
+
 const client = new Client({
-  connectionString:('postgresql://vishalssharma811:0T3LfetZzyFo@ep-lucky-cake-a5x3dwnk.us-east-2.aws.neon.tech/neondb?sslmode=require')
-})
+  connectionString: connectionString
+});
 
-create a user table.
+
+// create a user table.
+
 async function createuser(){
     await client.connect();
     try {
@@ -53,12 +59,90 @@ async function insertData(){
 }
  insertData();
 
-// Access Data from the database
 
-// async function getdata(){
-//     await client.connect();
-//     const res  =`SELECT * FROM 'User';`
-//     console.log(res);
-// }
 
-// getdata();
+// // Access Data from the database
+async function getdata() {
+  try {
+      await client.connect();
+      const res = await client.query('SELECT * FROM "User" WHERE "lastName"=\'sharma\';');
+      console.log(res.rows);
+  } catch (err) {
+      console.error('Error executing query:', err);
+  } finally {
+      await client.end();
+  }
+}
+
+getdata();
+
+
+// // Inserting data with the query (SQL INJECTION)
+
+async function insertData(){
+    try {
+       await client.connect();
+      //  const insertquery =`
+      //      INSERT INTO "User"(email,"firstName","lastName", password) VALUES ('SELECT * FROM "User" ,"vishal12","sharma1", "123456"')
+      //  `
+      const insertquery =`
+    INSERT INTO "User"(email,"firstName","lastName", password) VALUES ('SELECT * FROM "User"' ,"vishal12","sharma1", "123456")
+`;
+
+       const res  =await client.query(insertquery);
+       console.log("insertion successfull" ,res);
+    } catch (error) {
+      console.error(error);
+    }finally{
+         await client.end();
+    }
+}
+
+insertData();
+
+
+// Inserting data with the more secure way...
+
+async function insertdata(email:string,firstName:string,lastName:string,password:string|number){
+  try {
+    await client.connect();
+  const insertquery = `
+      INSERT INTO "User"(email ,"firstName", "lastName" ,password) VALUES($1,$2,$3,$4);
+  `;
+  const values =[email,firstName,lastName,password];
+  const res =await client.query(insertquery,values);
+  console.log("Insertion successfull");
+  } catch (error) {
+      console.error(error);
+  }finally{
+       client.end();
+  }
+
+ }
+
+ insertdata('example@example.com', 'John', 'Doe',123456);
+
+// Secure way to get data 
+
+
+async function getdata(email:string){
+    try {
+      await client.connect();
+
+    const getquery ='SELECT * FROM "User" WHERE email=$1';
+    const values =[email];
+    const res =await client.query(getquery,values);
+     if(res.rows.length>0){
+      console.log(res.rows[0]);
+     }
+     else{
+      console.log("user not found");
+     }
+    } catch (error) {
+        console.error(error);
+    }finally{
+      await client.end();
+    }
+}
+
+getdata("example@example.com");
