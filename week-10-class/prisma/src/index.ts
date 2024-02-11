@@ -17,8 +17,7 @@ const prisma = new PrismaClient();
 //   insertUser("admin2", "123456", "Vishal", "sharma")
 
 
-////// updation 
-
+////// updation
 interface UpdateParams {
     firstName: string;
     lastName: string;
