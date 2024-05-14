@@ -1,0 +1,27 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model applicants{
+   id Int @id @default(autoincrement())
+   username String? //optional
+   email String @unique
+   password String 
+   todo todos[]   // this make a relationship with todos table and show that one user have many todos
+}
+
+
+model todos{
+  id Int @id @default(autoincrement())
+  title String
+  description String
+  userId Int
+  user applicants @relation(fields: [userId], references: [id]) //work like a foreign key
+}
